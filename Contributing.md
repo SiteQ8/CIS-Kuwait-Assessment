@@ -136,7 +136,7 @@ cd CIS-Kuwait-Assessment
 
 Contributors will be:
 - Listed in README
-- Mentioned in release notes
+- Mentioned in release notes 
 - Given credit in commits
 
 ## Questions?
@@ -146,7 +146,7 @@ Contributors will be:
 
 ## Code of Conduct
 
-Be respectful, professional, and inclusive. See [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md)
+Be respectful, professional, and inclusive. See [code_of_conduct.md](code_of_conduct.md)
 
 ---
 
