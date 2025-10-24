@@ -73,7 +73,7 @@ A self-assessment tool specifically designed for Kuwait government entities to e
 
 **الطريقة الأسهل**: قم بزيارة الأداة مباشرة عبر الرابط:
 ```
-https://ppl-ai-code-interpreter-files.s3.amazonaws.com/web/direct-files/2a6435b52f1dcba4002ff39f4597970f/4a69b2f5-b844-4cd0-82fd-432d55c38ad2/index.html
+https://siteq8.github.io/CIS-Kuwait-Assessment/
 ```
 
 </div>
