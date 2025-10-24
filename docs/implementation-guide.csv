@@ -1,0 +1,106 @@
+﻿Control ID,Control Name,Implementation Group,Priority,Difficulty,Estimated Time,Key Steps,Resources Needed,Success Criteria
+1.1,Establish and Maintain Detailed Asset Inventory,IG1,Critical,Medium,2-4 weeks,"1. Identify all hardware assets
+2. Document asset details (make, model, location)
+3. Assign asset owners
+4. Establish update procedures
+5. Review quarterly","Asset management tool, Spreadsheet, Network scanning tool","Complete inventory with 95%+ accuracy, Updated monthly, Owner assigned to each asset"
+1.2,Address Unauthorized Assets,IG1,Critical,Medium,1-2 weeks,"1. Scan network for unauthorized devices
+2. Investigate unknown assets
+3. Remove or authorize assets
+4. Update inventory
+5. Implement monitoring","Network scanner, Asset register, Removal procedures","Zero unauthorized assets, Weekly scans, Automated alerts"
+2.1,Establish and Maintain Software Inventory,IG1,Critical,Medium,2-4 weeks,"1. Identify all software applications
+2. Document versions and licenses
+3. Assign software owners
+4. Track unauthorized software
+5. Review quarterly","Software inventory tool, License management, Documentation","Complete software inventory, License compliance, Monthly updates"
+3.1,Establish and Maintain Data Management,IG1,High,Hard,4-8 weeks,"1. Classify data by sensitivity
+2. Map data locations
+3. Define retention periods
+4. Establish handling procedures
+5. Train staff","Data classification policy, DLP tools, Training materials","All sensitive data classified, Documented locations, Staff trained"
+4.1,Establish and Maintain Secure Configuration,IG1,Critical,Medium,3-6 weeks,"1. Define baseline configurations
+2. Document standards
+3. Implement hardening guides
+4. Test configurations
+5. Deploy and monitor","Configuration baselines, Hardening guides (CIS Benchmarks), Testing tools","Documented baselines for all systems, 90%+ compliance, Quarterly reviews"
+5.1,Establish and Maintain Account Management,IG1,Critical,Easy,1-2 weeks,"1. Review all user accounts
+2. Remove unused accounts
+3. Disable inactive accounts (30 days)
+4. Implement review process
+5. Automate where possible","Active Directory/IAM system, Account review procedures, Automation scripts","Zero orphaned accounts, Monthly reviews, 100% documented accounts"
+6.1,Establish Access Control Policy,IG1,Critical,Medium,2-4 weeks,"1. Define access principles (least privilege)
+2. Document approval process
+3. Create role-based access matrix
+4. Implement review cycle
+5. Train managers","Access control policy template, RBAC matrix, Training materials","Approved policy, Documented roles, Quarterly access reviews"
+7.1,Establish and Maintain Training Program,IG1,High,Medium,4-8 weeks,"1. Assess training needs
+2. Develop training content
+3. Schedule regular sessions
+4. Track completion
+5. Update annually","Training platform, Content materials, Tracking system","100% staff trained annually, 80%+ pass rate, Documented completion"
+8.1,Establish Audit Log Management,IG1,Critical,Hard,4-6 weeks,"1. Identify critical systems
+2. Enable logging
+3. Centralize logs (SIEM)
+4. Define retention (90 days minimum)
+5. Monitor regularly","SIEM/log management tool, Storage capacity, Log sources","All critical systems logged, 90+ days retention, Daily monitoring"
+9.1,Ensure Regular Automated Backups,IG1,Critical,Easy,1-2 weeks,"1. Identify critical data
+2. Schedule automated backups (daily)
+3. Test recovery procedures
+4. Store offsite/offline
+5. Document procedures","Backup solution, Offsite storage, Recovery testing schedule","Daily automated backups, Monthly recovery tests, 100% critical data covered"
+10.1,Deploy Anti-Malware Software,IG1,Critical,Easy,1 week,"1. Select anti-malware solution
+2. Deploy to all endpoints
+3. Configure auto-updates
+4. Enable real-time protection
+5. Monitor alerts","Anti-malware licenses, Deployment tool, Alert monitoring","100% endpoint coverage, Daily signature updates, Centralized monitoring"
+11.1,Establish Recovery Procedures,IG1,High,Medium,2-4 weeks,"1. Document recovery procedures
+2. Define RPO/RTO targets
+3. Test recovery annually
+4. Update procedures
+5. Train recovery team","Recovery documentation, Testing environment, Team training","Documented procedures, Annual testing, Defined RPO/RTO"
+12.1,Ensure Network Infrastructure is Up-to-Date,IG1,High,Medium,2-3 weeks,"1. Inventory network devices
+2. Check current versions
+3. Plan updates
+4. Test in lab
+5. Deploy updates","Network inventory, Update schedule, Testing lab","All devices on supported versions, Quarterly updates, Zero end-of-life devices"
+13.1,Centralize Security Event Alerting,IG1,High,Hard,4-8 weeks,"1. Select SIEM/monitoring tool
+2. Define critical events
+3. Configure alerting rules
+4. Establish response procedures
+5. Train security team","SIEM platform, Alert definitions, Response playbooks","Centralized alerting, 24/7 monitoring, Documented response"
+1.3,Utilize Active Discovery Tool,IG2,High,Medium,2-3 weeks,"1. Select network discovery tool
+2. Configure scanning schedules
+3. Integrate with asset inventory
+4. Set up automated updates
+5. Review findings weekly","Network discovery tool, Integration capabilities, Alert system","Automated daily scans, 95%+ asset discovery, Weekly reviews"
+3.2,Establish and Maintain Data Inventory,IG2,High,Hard,6-12 weeks,"1. Map all data repositories
+2. Document data flows
+3. Classify all data
+4. Track data movement
+5. Update quarterly","Data discovery tools, Data flow mapping, Classification tools","Complete data inventory, Documented flows, Quarterly updates"
+7.2,Establish and Maintain Security Awareness Program,IG2,High,Medium,3-6 months,"1. Develop awareness content
+2. Conduct phishing simulations
+3. Track metrics
+4. Provide ongoing training
+5. Measure effectiveness","Awareness platform, Phishing simulation tool, Metrics tracking","Quarterly campaigns, <5% phishing click rate, 90%+ participation"
+16.1,Establish Application Security Program,IG2,High,Hard,3-6 months,"1. Define secure development lifecycle
+2. Implement code review process
+3. Deploy security testing tools
+4. Train developers
+5. Track vulnerabilities","SAST/DAST tools, Training program, Vulnerability tracking","All apps go through SDLC, Quarterly security testing, <10 high vulns"
+1.4,Use Dynamic Asset Inventory,IG3,Medium,Hard,2-4 weeks,"1. Implement real-time asset discovery
+2. Integrate with CMDB
+3. Enable automated classification
+4. Set up anomaly detection
+5. Review alerts daily","Advanced asset management, CMDB, AI/ML capabilities","Real-time asset tracking, Automated classification, Daily monitoring"
+8.2,Collect Detailed Audit Logs,IG3,High,Hard,4-8 weeks,"1. Enable detailed logging on all systems
+2. Collect command-line audit logs
+3. Monitor privileged access
+4. Implement log analysis
+5. Retain 1+ year","Advanced SIEM, Storage (1+ year), Analytics tools","Comprehensive logging, 1 year retention, Advanced analytics"
+18.1,Establish Penetration Testing Program,IG3,High,Hard,Ongoing,"1. Define testing scope
+2. Engage qualified testers
+3. Conduct annual tests
+4. Remediate findings
+5. Track improvements","Penetration testing team/vendor, Testing tools, Remediation resources","Annual penetration tests, All high findings remediated, Documented improvements"
