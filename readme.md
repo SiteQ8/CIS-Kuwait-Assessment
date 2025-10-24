@@ -287,14 +287,12 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 <div dir="rtl">
 
 - **مركز أمان الإنترنت (CIS)** لتطوير وصيانة إطار الضوابط الأمنية
-- **المركز الوطني للأمن السيبراني الكويتي (NCSC)** لدعم الأمن السيبراني في الكويت
 - **الباحثون والمساهمون** في البحث العلمي الأساسي
 - **الجهات الحكومية الكويتية** التي قدمت ملاحظات قيمة
 
 </div>
 
 - **Center for Internet Security (CIS)** for developing and maintaining the Controls framework
-- **Kuwait National Cybersecurity Center (NCSC)** for supporting cybersecurity in Kuwait
 - **Researchers and contributors** to the foundational research
 - **Kuwait government entities** that provided valuable feedback
 
