@@ -197,10 +197,10 @@ start index.html
 ### File Structure:
 ```
 CIS-Kuwait-Assessment/
-├── index.html              # Main application file
 ├── README.md              # This file
 ├── docs/
 │   ├── implementation-guide.csv
+|   ├── index.html              # Main application file
 │   ├── user-manual-ar.pdf
 │   └── user-manual-en.pdf
 └── assets/
