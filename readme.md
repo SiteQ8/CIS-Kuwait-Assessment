@@ -201,8 +201,8 @@ CIS-Kuwait-Assessment/
 ├── docs/
 │   ├── implementation-guide.csv
 |   ├── index.html              # Main application file
-│   ├── user-manual-ar.pdf
-│   └── user-manual-en.pdf
+│   ├── user-manual-ar.md
+│   └── user-manual-en.md
 └── assets/
     ├── images/
     └── data/
