@@ -338,6 +338,6 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ### صُنع بـ ❤️ في الكويت | Made with ❤️ in Kuwait
 
-**Version 1.0** | Based on CIS Controls v8.1
+**Version 0.0.1** | Based on CIS Controls v8.1
 
 </div>
