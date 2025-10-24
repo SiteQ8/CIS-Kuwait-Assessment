@@ -1,0 +1,2253 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>أداة التقييم الذاتي لضوابط إطار CIS - Kuwait Government</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700&family=Open+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <style>
+        /* Design System CSS */
+        :root {
+            /* Kuwait Government Colors */
+            --color-kuwait-blue: #003366;
+            --color-kuwait-gold: #D4AF37;
+            --color-kuwait-light: #f8f9fa;
+            
+            /* Primitive Color Tokens */
+            --color-white: rgba(255, 255, 255, 1);
+            --color-black: rgba(0, 0, 0, 1);
+            --color-cream-50: rgba(252, 252, 249, 1);
+            --color-cream-100: rgba(255, 255, 253, 1);
+            --color-gray-200: rgba(245, 245, 245, 1);
+            --color-gray-300: rgba(167, 169, 169, 1);
+            --color-gray-400: rgba(119, 124, 124, 1);
+            --color-slate-500: rgba(98, 108, 113, 1);
+            --color-brown-600: rgba(94, 82, 64, 1);
+            --color-charcoal-700: rgba(31, 33, 33, 1);
+            --color-charcoal-800: rgba(38, 40, 40, 1);
+            --color-slate-900: rgba(19, 52, 59, 1);
+            --color-teal-300: rgba(50, 184, 198, 1);
+            --color-teal-400: rgba(45, 166, 178, 1);
+            --color-teal-500: rgba(33, 128, 141, 1);
+            --color-teal-600: rgba(29, 116, 128, 1);
+            --color-teal-700: rgba(26, 104, 115, 1);
+            --color-teal-800: rgba(41, 150, 161, 1);
+            --color-red-400: rgba(255, 84, 89, 1);
+            --color-red-500: rgba(192, 21, 47, 1);
+            --color-orange-400: rgba(230, 129, 97, 1);
+            --color-orange-500: rgba(168, 75, 47, 1);
+
+            /* Semantic Colors - Kuwait Theme */
+            --color-primary: var(--color-kuwait-blue);
+            --color-primary-hover: #002244;
+            --color-secondary: var(--color-kuwait-gold);
+            --color-secondary-hover: #b8951f;
+            --color-background: var(--color-cream-50);
+            --color-surface: var(--color-white);
+            --color-text: var(--color-slate-900);
+            --color-text-secondary: var(--color-slate-500);
+            --color-border: rgba(0, 51, 102, 0.2);
+            --color-success: #28a745;
+            --color-warning: #ffc107;
+            --color-error: #dc3545;
+            
+            /* Typography */
+            --font-family-arabic: "Cairo", "Tajawal", sans-serif;
+            --font-family-english: "Open Sans", sans-serif;
+            --font-size-xs: 11px;
+            --font-size-sm: 12px;
+            --font-size-base: 14px;
+            --font-size-md: 16px;
+            --font-size-lg: 18px;
+            --font-size-xl: 20px;
+            --font-size-2xl: 24px;
+            --font-size-3xl: 30px;
+            --font-size-4xl: 36px;
+            
+            /* Spacing */
+            --space-2: 2px;
+            --space-4: 4px;
+            --space-8: 8px;
+            --space-12: 12px;
+            --space-16: 16px;
+            --space-20: 20px;
+            --space-24: 24px;
+            --space-32: 32px;
+            --space-48: 48px;
+            
+            /* Border Radius */
+            --radius-sm: 6px;
+            --radius-base: 8px;
+            --radius-lg: 12px;
+            
+            /* Shadows */
+            --shadow-sm: 0 2px 4px rgba(0,0,0,0.1);
+            --shadow-md: 0 4px 12px rgba(0,0,0,0.15);
+            --shadow-lg: 0 8px 24px rgba(0,0,0,0.15);
+        }
+        
+        [data-lang="en"] {
+            direction: ltr;
+            --font-family-primary: var(--font-family-english);
+        }
+        
+        [data-lang="ar"] {
+            direction: rtl;
+            --font-family-primary: var(--font-family-arabic);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        html, body {
+            font-family: var(--font-family-primary, var(--font-family-arabic));
+            background-color: var(--color-background);
+            color: var(--color-text);
+            line-height: 1.6;
+            height: 100%;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 var(--space-20);
+        }
+        
+        /* Header Styles */
+        .header {
+            background: linear-gradient(135deg, var(--color-primary), #004080);
+            color: white;
+            padding: var(--space-20) 0;
+            box-shadow: var(--shadow-md);
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: var(--space-16);
+        }
+        
+        .logo-section h1 {
+            font-size: var(--font-size-2xl);
+            font-weight: 700;
+            margin-bottom: var(--space-4);
+        }
+        
+        .logo-section p {
+            opacity: 0.9;
+            font-size: var(--font-size-md);
+        }
+        
+        .lang-toggle {
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.3);
+            color: white;
+            padding: var(--space-8) var(--space-16);
+            border-radius: var(--radius-base);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: var(--font-size-sm);
+        }
+        
+        .lang-toggle:hover {
+            background: rgba(255,255,255,0.2);
+        }
+        
+        /* Navigation */
+        .nav-tabs {
+            background: var(--color-surface);
+            border-bottom: 1px solid var(--color-border);
+            padding: 0 var(--space-20);
+        }
+        
+        .nav-tabs-list {
+            display: flex;
+            list-style: none;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .nav-tab {
+            padding: var(--space-16) var(--space-24);
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+        
+        .nav-tab.active {
+            border-bottom-color: var(--color-secondary);
+            color: var(--color-primary);
+            background: rgba(0,51,102,0.05);
+        }
+        
+        .nav-tab:hover {
+            background: rgba(0,51,102,0.03);
+        }
+        
+        /* Main Content */
+        .main-content {
+            min-height: 70vh;
+            padding: var(--space-32) 0;
+        }
+        
+        .section {
+            display: none;
+        }
+        
+        .section.active {
+            display: block;
+        }
+        
+        /* Welcome Section */
+        .welcome-hero {
+            text-align: center;
+            padding: var(--space-48) 0;
+            background: linear-gradient(135deg, rgba(0,51,102,0.03), rgba(212,175,55,0.03));
+            border-radius: var(--radius-lg);
+            margin-bottom: var(--space-32);
+        }
+        
+        .welcome-hero h2 {
+            font-size: var(--font-size-3xl);
+            color: var(--color-primary);
+            margin-bottom: var(--space-16);
+            font-weight: 700;
+        }
+        
+        .welcome-hero p {
+            font-size: var(--font-size-lg);
+            color: var(--color-text-secondary);
+            margin-bottom: var(--space-24);
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: var(--space-24);
+            margin: var(--space-32) 0;
+        }
+        
+        .stat-card {
+            background: var(--color-surface);
+            padding: var(--space-24);
+            border-radius: var(--radius-lg);
+            text-align: center;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--color-border);
+        }
+        
+        .stat-number {
+            font-size: var(--font-size-3xl);
+            font-weight: 700;
+            color: var(--color-secondary);
+            display: block;
+        }
+        
+        .stat-label {
+            color: var(--color-text-secondary);
+            font-size: var(--font-size-sm);
+            margin-top: var(--space-8);
+        }
+        
+        /* Buttons */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: var(--space-12) var(--space-24);
+            border-radius: var(--radius-base);
+            font-weight: 600;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            gap: var(--space-8);
+            font-size: var(--font-size-base);
+        }
+        
+        .btn-primary {
+            background: var(--color-primary);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: var(--color-primary-hover);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+        
+        .btn-secondary {
+            background: var(--color-secondary);
+            color: white;
+        }
+        
+        .btn-secondary:hover {
+            background: var(--color-secondary-hover);
+        }
+        
+        .btn-outline {
+            background: transparent;
+            color: var(--color-primary);
+            border: 2px solid var(--color-primary);
+        }
+        
+        .btn-outline:hover {
+            background: var(--color-primary);
+            color: white;
+        }
+        
+        .btn-lg {
+            padding: var(--space-16) var(--space-32);
+            font-size: var(--font-size-lg);
+        }
+        
+        /* Form Styles */
+        .form-group {
+            margin-bottom: var(--space-20);
+        }
+        
+        .form-label {
+            display: block;
+            margin-bottom: var(--space-8);
+            font-weight: 600;
+            color: var(--color-text);
+        }
+        
+        .form-input {
+            width: 100%;
+            padding: var(--space-12);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-base);
+            font-size: var(--font-size-base);
+            transition: all 0.3s ease;
+        }
+        
+        .form-input:focus {
+            outline: none;
+            border-color: var(--color-primary);
+            box-shadow: 0 0 0 3px rgba(0,51,102,0.1);
+        }
+        
+        .form-select {
+            width: 100%;
+            padding: var(--space-12);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-base);
+            font-size: var(--font-size-base);
+            background: white;
+        }
+        
+        /* Cards */
+        .card {
+            background: var(--color-surface);
+            border-radius: var(--radius-lg);
+            padding: var(--space-24);
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--color-border);
+            transition: all 0.3s ease;
+        }
+        
+        .card:hover {
+            box-shadow: var(--shadow-md);
+            transform: translateY(-2px);
+        }
+        
+        .card-title {
+            font-size: var(--font-size-xl);
+            font-weight: 600;
+            color: var(--color-primary);
+            margin-bottom: var(--space-12);
+        }
+        
+        /* Implementation Group Cards */
+        .ig-selector {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: var(--space-24);
+            margin: var(--space-32) 0;
+        }
+        
+        .ig-card {
+            padding: var(--space-32);
+            position: relative;
+            cursor: pointer;
+            border: 2px solid transparent;
+        }
+        
+        .ig-card.selected {
+            border-color: var(--color-secondary);
+            background: rgba(212,175,55,0.05);
+        }
+        
+        .ig-badge {
+            display: inline-block;
+            background: var(--color-secondary);
+            color: white;
+            padding: var(--space-4) var(--space-12);
+            border-radius: var(--radius-base);
+            font-size: var(--font-size-sm);
+            font-weight: 600;
+            margin-bottom: var(--space-16);
+        }
+        
+        .safeguards-count {
+            font-size: var(--font-size-2xl);
+            font-weight: 700;
+            color: var(--color-primary);
+            margin: var(--space-12) 0;
+        }
+        
+        /* Assessment Interface */
+        .assessment-container {
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: var(--space-32);
+            min-height: 600px;
+        }
+        
+        .controls-sidebar {
+            background: var(--color-surface);
+            border-radius: var(--radius-lg);
+            padding: var(--space-24);
+            box-shadow: var(--shadow-sm);
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+        
+        .control-item {
+            padding: var(--space-12);
+            margin-bottom: var(--space-8);
+            border-radius: var(--radius-base);
+            cursor: pointer;
+            border-left: 4px solid transparent;
+            transition: all 0.3s ease;
+            font-size: var(--font-size-sm);
+        }
+        
+        .control-item:hover {
+            background: rgba(0,51,102,0.05);
+        }
+        
+        .control-item.active {
+            background: rgba(0,51,102,0.1);
+            border-left-color: var(--color-secondary);
+        }
+        
+        .control-item.completed {
+            border-left-color: var(--color-success);
+        }
+        
+        .control-assessment {
+            background: var(--color-surface);
+            border-radius: var(--radius-lg);
+            padding: var(--space-32);
+            box-shadow: var(--shadow-sm);
+        }
+        
+        .control-header {
+            margin-bottom: var(--space-24);
+            padding-bottom: var(--space-24);
+            border-bottom: 1px solid var(--color-border);
+        }
+        
+        .control-title {
+            font-size: var(--font-size-2xl);
+            color: var(--color-primary);
+            margin-bottom: var(--space-12);
+        }
+        
+        .why-critical {
+            background: rgba(212,175,55,0.1);
+            padding: var(--space-20);
+            border-radius: var(--radius-base);
+            margin: var(--space-20) 0;
+        }
+        
+        .why-critical h4 {
+            color: var(--color-secondary);
+            margin-bottom: var(--space-8);
+        }
+        
+        .safeguard-badges {
+            display: flex;
+            gap: var(--space-8);
+            margin: var(--space-16) 0;
+            flex-wrap: wrap;
+        }
+        
+        .badge {
+            padding: var(--space-4) var(--space-12);
+            background: var(--color-primary);
+            color: white;
+            border-radius: var(--radius-base);
+            font-size: var(--font-size-sm);
+        }
+        
+        .question-group {
+            margin-bottom: var(--space-24);
+            padding: var(--space-20);
+            background: rgba(0,51,102,0.02);
+            border-radius: var(--radius-base);
+        }
+        
+        .question-title {
+            font-weight: 600;
+            margin-bottom: var(--space-16);
+        }
+        
+        .radio-options {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-12);
+        }
+        
+        .radio-option {
+            display: flex;
+            align-items: center;
+            gap: var(--space-8);
+            padding: var(--space-8);
+            border-radius: var(--radius-base);
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+        
+        .radio-option:hover {
+            background: rgba(0,51,102,0.05);
+        }
+        
+        .radio-option input[type="radio"] {
+            margin-right: var(--space-8);
+        }
+        
+        [dir="ltr"] .radio-option input[type="radio"] {
+            margin-right: 0;
+            margin-left: var(--space-8);
+        }
+        
+        .notes-textarea {
+            width: 100%;
+            min-height: 100px;
+            padding: var(--space-12);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-base);
+            font-family: inherit;
+            resize: vertical;
+        }
+        
+        /* Progress Bar */
+        .progress-container {
+            background: var(--color-surface);
+            padding: var(--space-20);
+            border-radius: var(--radius-lg);
+            margin-bottom: var(--space-32);
+            box-shadow: var(--shadow-sm);
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #e0e0e0;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-bottom: var(--space-12);
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: var(--color-secondary);
+            transition: width 0.3s ease;
+        }
+        
+        .progress-text {
+            text-align: center;
+            font-weight: 600;
+            color: var(--color-primary);
+        }
+        
+        /* Results Dashboard */
+        .results-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: var(--space-24);
+            margin-bottom: var(--space-32);
+        }
+        
+        .result-card {
+            text-align: center;
+            padding: var(--space-24);
+        }
+        
+        .score-display {
+            font-size: var(--font-size-4xl);
+            font-weight: 700;
+            color: var(--color-secondary);
+            margin-bottom: var(--space-8);
+        }
+        
+        .maturity-level {
+            font-size: var(--font-size-lg);
+            font-weight: 600;
+            color: var(--color-primary);
+            padding: var(--space-8) var(--space-16);
+            background: rgba(0,51,102,0.1);
+            border-radius: var(--radius-base);
+            display: inline-block;
+        }
+        
+        .chart-container {
+            background: var(--color-surface);
+            padding: var(--space-24);
+            border-radius: var(--radius-lg);
+            margin-bottom: var(--space-24);
+            box-shadow: var(--shadow-sm);
+        }
+        
+        .chart-wrapper {
+            position: relative;
+            height: 400px;
+        }
+        
+        .findings-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: var(--color-surface);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+        }
+        
+        .findings-table th {
+            background: var(--color-primary);
+            color: white;
+            padding: var(--space-16);
+            text-align: center;
+            font-weight: 600;
+        }
+        
+        .findings-table td {
+            padding: var(--space-12) var(--space-16);
+            border-bottom: 1px solid var(--color-border);
+            text-align: center;
+        }
+        
+        .status-indicator {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: var(--space-8);
+        }
+        
+        .status-high { background: var(--color-success); }
+        .status-medium { background: var(--color-warning); }
+        .status-low { background: var(--color-error); }
+        
+        /* Export Section */
+        .export-actions {
+            display: flex;
+            gap: var(--space-16);
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-top: var(--space-32);
+            padding: var(--space-24);
+            background: var(--color-surface);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-sm);
+        }
+        
+        /* Footer */
+        .footer {
+            background: var(--color-primary);
+            color: white;
+            padding: var(--space-32) 0;
+            text-align: center;
+            margin-top: var(--space-48);
+        }
+        
+        .footer p {
+            margin-bottom: var(--space-8);
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .assessment-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .controls-sidebar {
+                order: 2;
+                max-height: 300px;
+            }
+            
+            .control-assessment {
+                order: 1;
+            }
+            
+            .container {
+                padding: 0 var(--space-16);
+            }
+            
+            .nav-tabs-list {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            .nav-tab {
+                flex: 1;
+                min-width: 120px;
+                text-align: center;
+            }
+        }
+        
+        /* Hide sections by default */
+        .hidden {
+            display: none !important;
+        }
+        
+        /* Utility Classes */
+        .text-center { text-align: center; }
+        .mt-16 { margin-top: var(--space-16); }
+        .mt-24 { margin-top: var(--space-24); }
+        .mb-16 { margin-bottom: var(--space-16); }
+        .mb-24 { margin-bottom: var(--space-24); }
+        .text-primary { color: var(--color-primary); }
+        .text-secondary { color: var(--color-text-secondary); }
+    </style>
+</head>
+<body data-lang="ar">
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo-section">
+                    <h1 id="headerTitle">أداة التقييم الذاتي لضوابط إطار CIS</h1>
+                    <p id="headerSubtitle">للجهات الحكومية الكويتية - الإصدار 8.1</p>
+                </div>
+                <button class="lang-toggle" onclick="toggleLanguage()" id="langToggle">English</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Navigation -->
+    <nav class="nav-tabs">
+        <div class="nav-tabs-list">
+            <div class="nav-tab active" onclick="showSection('welcome')" id="navWelcome">الرئيسية</div>
+            <div class="nav-tab" onclick="showSection('entity-info')" id="navEntity">معلومات الجهة</div>
+            <div class="nav-tab" onclick="showSection('ig-selection')" id="navIG">اختيار المجموعة</div>
+            <div class="nav-tab" onclick="showSection('assessment')" id="navAssessment">التقييم</div>
+            <div class="nav-tab" onclick="showSection('results')" id="navResults">النتائج</div>
+            <div class="nav-tab" onclick="showSection('resources')" id="navResources">المصادر</div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="container">
+            <!-- Welcome Section -->
+            <section id="welcome" class="section active">
+                <div class="welcome-hero">
+                    <h2 id="welcomeTitle">مرحباً بكم في أداة التقييم الذاتي لضوابط إطار CIS</h2>
+                    <p id="welcomeDesc">أداة شاملة مطورة خصيصاً للجهات الحكومية الكويتية لتقييم مستوى الامتثال لضوابط مركز أمان الإنترنت (CIS Controls v8) ورفع مستوى الاستعدادات الأمنية السيبرانية</p>
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <span class="stat-number">18</span>
+                            <div class="stat-label" id="statControls">ضابط أمني</div>
+                        </div>
+                        <div class="stat-card">
+                            <span class="stat-number">153</span>
+                            <div class="stat-label" id="statSafeguards">ضمانة حماية</div>
+                        </div>
+                        <div class="stat-card">
+                            <span class="stat-number">3</span>
+                            <div class="stat-label" id="statGroups">مجموعات تنفيذية</div>
+                        </div>
+                        <div class="stat-card">
+                            <span class="stat-number">2035</span>
+                            <div class="stat-label" id="statVision">رؤية الكويت</div>
+                        </div>
+                    </div>
+                    <button class="btn btn-primary btn-lg" onclick="startAssessment()" id="startBtn">
+                        بدء التقييم
+                    </button>
+                </div>
+                
+                <div class="card mt-24">
+                    <h3 class="card-title" id="aboutTitle">حول هذه الأداة</h3>
+                    <p id="aboutText">تم تطوير هذه الأداة بناءً على البحث العلمي "رفع مستوى استعدادات الأمن السيبراني في الجهات الحكومية بدولة الكويت من خلال تطبيق ضوابط إطار مركز أمان الإنترنت (CIS)" والمنشور في ResearchGate. تهدف الأداة إلى مساعدة الجهات الحكومية الكويتية في:</p>
+                    <ul style="margin: 16px 0; padding-right: 24px;">
+                        <li id="objective1">تقييم مستوى النضج الأمني الحالي</li>
+                        <li id="objective2">تحديد الثغرات والمجالات التي تحتاج تحسين</li>
+                        <li id="objective3">وضع خطط التحسين وفقاً لأولويات واضحة</li>
+                        <li id="objective4">المساهمة في تحقيق أهداف رؤية الكويت 2035 الرقمية</li>
+                    </ul>
+                    <div class="mt-16">
+                        <a href="https://www.researchgate.net/publication/384449388" target="_blank" class="btn btn-outline">اطلع على البحث الأصلي</a>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Entity Information Section -->
+            <section id="entity-info" class="section">
+                <div class="card">
+                    <h2 class="card-title" id="entityTitle">معلومات الجهة الحكومية</h2>
+                    <form id="entityForm">
+                        <div class="form-group">
+                            <label class="form-label" for="entityNameAr" id="labelEntityNameAr">اسم الجهة (عربي)</label>
+                            <input type="text" id="entityNameAr" class="form-input" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="entityNameEn" id="labelEntityNameEn">اسم الجهة (English)</label>
+                            <input type="text" id="entityNameEn" class="form-input" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="sector" id="labelSector">القطاع</label>
+                            <select id="sector" class="form-select" required>
+                                <option value="">اختر القطاع</option>
+                                <option value="ministry">وزارة</option>
+                                <option value="authority">هيئة عامة</option>
+                                <option value="municipality">بلدية</option>
+                                <option value="agency">جهاز مستقل</option>
+                                <option value="institution">مؤسسة عامة</option>
+                                <option value="company">شركة حكومية</option>
+                                <option value="other">أخرى</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="entitySize" id="labelSize">حجم الجهة</label>
+                            <select id="entitySize" class="form-select" required>
+                                <option value="">اختر حجم الجهة</option>
+                                <option value="small">صغيرة (أقل من 50 موظف)</option>
+                                <option value="medium">متوسطة (50-500 موظف)</option>
+                                <option value="large">كبيرة (أكثر من 500 موظف)</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="contactName" id="labelContact">اسم جهة الاتصال</label>
+                            <input type="text" id="contactName" class="form-input" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="contactEmail" id="labelEmail">البريد الإلكتروني</label>
+                            <input type="email" id="contactEmail" class="form-input" value="Site@hotmail.com" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="assessmentDate" id="labelDate">تاريخ التقييم</label>
+                            <input type="date" id="assessmentDate" class="form-input" readonly>
+                        </div>
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-primary btn-lg" id="saveEntityBtn">حفظ والمتابعة</button>
+                        </div>
+                    </form>
+                </div>
+            </section>
+
+            <!-- Implementation Group Selection -->
+            <section id="ig-selection" class="section">
+                <div class="text-center mb-24">
+                    <h2 id="igTitle">اختيار المجموعة التنفيذية المناسبة</h2>
+                    <p class="text-secondary" id="igDesc">اختر المجموعة التنفيذية التي تتناسب مع حجم جهتك ومتطلباتها الأمنية</p>
+                </div>
+                
+                <div class="ig-selector">
+                    <div class="card ig-card" onclick="selectIG('ig1')" id="ig1Card">
+                        <div class="ig-badge">IG1</div>
+                        <h3 class="card-title" id="ig1Title">المجموعة التنفيذية 1</h3>
+                        <h4 id="ig1Subtitle">النظافة السيبرانية الأساسية</h4>
+                        <div class="safeguards-count">56 <span style="font-size: 14px; font-weight: normal;" id="ig1Safeguards">ضمانة حماية</span></div>
+                        <p id="ig1Desc">للمؤسسات الصغيرة والمتوسطة ذات الموارد المحدودة والخبرة الأمنية الأساسية. تركز على الضوابط الأساسية والأكثر فعالية في منع الهجمات الشائعة.</p>
+                        <ul style="text-align: right; margin-top: 16px;">
+                            <li id="ig1Feature1">تأمين الأصول والبيانات الأساسية</li>
+                            <li id="ig1Feature2">إدارة الهويات والوصول</li>
+                            <li id="ig1Feature3">الحماية من البرمجيات الخبيثة</li>
+                            <li id="ig1Feature4">النسخ الاحتياطية واستعادة البيانات</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="card ig-card" onclick="selectIG('ig2')" id="ig2Card">
+                        <div class="ig-badge">IG2</div>
+                        <h3 class="card-title" id="ig2Title">المجموعة التنفيذية 2</h3>
+                        <h4 id="ig2Subtitle">الحماية المتقدمة</h4>
+                        <div class="safeguards-count">130 <span style="font-size: 14px; font-weight: normal;" id="ig2Safeguards">ضمانة حماية إجمالية</span></div>
+                        <p id="ig2Desc">للمؤسسات المتوسطة ذات البيئات المعقدة والبيانات الحساسة. تتضمن جميع ضوابط IG1 بالإضافة إلى 74 ضمانة إضافية للحماية المتقدمة.</p>
+                        <ul style="text-align: right; margin-top: 16px;">
+                            <li id="ig2Feature1">مراقبة الشبكة والكشف المتقدم</li>
+                            <li id="ig2Feature2">إدارة الثغرات الأمنية</li>
+                            <li id="ig2Feature3">الاستجابة للحوادث</li>
+                            <li id="ig2Feature4">التدريب والتوعية الأمنية</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="card ig-card" onclick="selectIG('ig3')" id="ig3Card">
+                        <div class="ig-badge">IG3</div>
+                        <h3 class="card-title" id="ig3Title">المجموعة التنفيذية 3</h3>
+                        <h4 id="ig3Subtitle">الأمن الشامل</h4>
+                        <div class="safeguards-count">153 <span style="font-size: 14px; font-weight: normal;" id="ig3Safeguards">ضمانة حماية شاملة</span></div>
+                        <p id="ig3Desc">للمؤسسات الكبيرة والحساسة مع متطلبات أمنية صارمة. تشمل جميع ضوابط IG1 وIG2 بالإضافة إلى 23 ضمانة للأمن الشامل.</p>
+                        <ul style="text-align: right; margin-top: 16px;">
+                            <li id="ig3Feature1">اختبار الاختراق المتقدم</li>
+                            <li id="ig3Feature2">الأمن التطبيقي الشامل</li>
+                            <li id="ig3Feature3">إدارة موردي الخدمات</li>
+                            <li id="ig3Feature4">التدقيق والامتثال المستمر</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="text-center mt-24">
+                    <button class="btn btn-primary btn-lg" onclick="continueToAssessment()" id="continueAssessmentBtn" disabled>متابعة التقييم</button>
+                </div>
+            </section>
+
+            <!-- Assessment Section -->
+            <section id="assessment" class="section">
+                <div class="progress-container">
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progressFill" style="width: 0%;"></div>
+                    </div>
+                    <div class="progress-text" id="progressText">0 من 18 ضابط مكتمل</div>
+                </div>
+                
+                <div class="assessment-container">
+                    <div class="controls-sidebar">
+                        <h3 id="controlsListTitle">قائمة الضوابط</h3>
+                        <div id="controlsList"></div>
+                    </div>
+                    
+                    <div class="control-assessment">
+                        <div id="controlContent"></div>
+                        <div class="text-center mt-24">
+                            <button class="btn btn-outline" onclick="previousControl()" id="prevControlBtn" style="margin-left: 16px;">الضابط السابق</button>
+                            <button class="btn btn-secondary" onclick="saveProgress()" id="saveProgressBtn">حفظ التقدم</button>
+                            <button class="btn btn-primary" onclick="nextControl()" id="nextControlBtn" style="margin-right: 16px;">الضابط التالي</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Results Section -->
+            <section id="results" class="section">
+                <div class="text-center mb-32">
+                    <h2 id="resultsTitle">نتائج تقييم الامتثال لضوابط CIS</h2>
+                </div>
+                
+                <div class="results-grid">
+                    <div class="card result-card">
+                        <h3 id="overallScoreTitle">النتيجة الإجمالية</h3>
+                        <div class="score-display" id="overallScore">0%</div>
+                        <div class="maturity-level" id="maturityLevel">مستوى أولي</div>
+                    </div>
+                    <div class="card result-card">
+                        <h3 id="implementedTitle">الضوابط المطبقة بالكامل</h3>
+                        <div class="score-display" id="implementedCount">0</div>
+                        <div class="text-secondary" id="implementedSub">من 18 ضابط</div>
+                    </div>
+                    <div class="card result-card">
+                        <h3 id="attentionTitle">تحتاج إلى اهتمام</h3>
+                        <div class="score-display" id="attentionCount">0</div>
+                        <div class="text-secondary" id="attentionSub">ضابط يحتاج تحسين</div>
+                    </div>
+                    <div class="card result-card">
+                        <h3 id="comparisonTitle">مقارنة بالمتوسط</h3>
+                        <div class="score-display" id="comparison">N/A</div>
+                        <div class="text-secondary" id="comparisonSub">تقييم أساسي</div>
+                    </div>
+                </div>
+                
+                <!-- Charts -->
+                <div class="chart-container">
+                    <h3 id="radarChartTitle">مستوى الامتثال للضوابط الـ18</h3>
+                    <div class="chart-wrapper">
+                        <canvas id="radarChart"></canvas>
+                    </div>
+                </div>
+                
+                <div class="chart-container">
+                    <h3 id="barChartTitle">مقارنة المجموعات التنفيذية</h3>
+                    <div class="chart-wrapper">
+                        <canvas id="barChart"></canvas>
+                    </div>
+                </div>
+                
+                <!-- Findings Table -->
+                <div class="card">
+                    <h3 class="card-title" id="findingsTitle">النتائج التفصيلية</h3>
+                    <table class="findings-table">
+                        <thead>
+                            <tr>
+                                <th id="thControl">الضابط</th>
+                                <th id="thCompliance">مستوى الامتثال</th>
+                                <th id="thStatus">الحالة</th>
+                                <th id="thPriority">الأولوية</th>
+                            </tr>
+                        </thead>
+                        <tbody id="findingsTableBody">
+                        </tbody>
+                    </table>
+                </div>
+                
+                <!-- Recommendations -->
+                <div class="card mt-24">
+                    <h3 class="card-title" id="recommendationsTitle">التوصيات والخطوات التالية</h3>
+                    <div id="recommendationsContent"></div>
+                </div>
+                
+                <!-- Export Actions -->
+                <div class="export-actions">
+                    <button class="btn btn-primary" onclick="exportPDF()" id="exportPDFBtn">تصدير تقرير PDF</button>
+                    <button class="btn btn-secondary" onclick="exportExcel()" id="exportExcelBtn">تصدير Excel</button>
+                    <button class="btn btn-outline" onclick="emailResults()" id="emailResultsBtn">إرسال بالبريد الإلكتروني</button>
+                    <button class="btn btn-outline" onclick="printResults()" id="printResultsBtn">طباعة النتائج</button>
+                </div>
+            </section>
+
+            <!-- Resources Section -->
+            <section id="resources" class="section">
+                <div class="text-center mb-32">
+                    <h2 id="resourcesTitle">المصادر والمراجع</h2>
+                </div>
+                
+                <div class="card mb-24">
+                    <h3 class="card-title" id="cisResourcesTitle">مصادر CIS Controls</h3>
+                    <ul style="line-height: 2;">
+                        <li><a href="https://www.cisecurity.org/controls" target="_blank" id="cisDocsLink">وثائق CIS Controls الرسمية</a></li>
+                        <li><a href="https://www.cisecurity.org/controls/implementation-guide" target="_blank" id="implementationGuideLink">دليل التطبيق</a></li>
+                        <li><a href="https://www.cisecurity.org/controls/cis-controls-list" target="_blank" id="controlsListLink">قائمة الضوابط الكاملة</a></li>
+                    </ul>
+                </div>
+                
+                <div class="card mb-24">
+                    <h3 class="card-title" id="kuwaitResourcesTitle">المصادر الكويتية</h3>
+                    <ul style="line-height: 2;">
+                        <li id="kuwaitCyberStrategy">الاستراتيجية الوطنية للأمن السيبراني - الكويت</li>
+                        <li id="cbkFramework">إطار الأمن السيبراني - بنك الكويت المركزي</li>
+                        <li id="vision2035">رؤية الكويت 2035 - التحول الرقمي</li>
+                        <li><a href="https://www.researchgate.net/publication/384449388" target="_blank" id="researchPaperLink">البحث الأصلي - ResearchGate</a></li>
+                    </ul>
+                </div>
+                
+                <div class="card mb-24">
+                    <h3 class="card-title" id="supportTitle">الدعم والمساعدة</h3>
+                    <p id="supportText">للحصول على الدعم الفني أو المساعدة في تطبيق الضوابط:</p>
+                    <ul style="line-height: 2;">
+                        <li id="contactInfo">البريد الإلكتروني: <a href="mailto:Site@hotmail.com">Site@hotmail.com</a></li>
+                        <li id="githubInfo">GitHub: <a href="https://github.com/SiteQ8" target="_blank">SiteQ8</a></li>
+                        <li id="developedBy">تم التطوير بواسطة: SiteQ8</li>
+                    </ul>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p id="footerText1">تم تطوير هذه الأداة بناءً على البحث العلمي حول رفع مستوى استعدادات الأمن السيبراني في الجهات الحكومية الكويتية</p>
+            <p id="footerText2">Developed by SiteQ8 (Site@hotmail.com) | Based on CIS Controls v8 | Kuwait Government Entities</p>
+        </div>
+    </footer>
+
+    <script>
+        // Application State
+        const appState = {
+            currentLanguage: 'ar',
+            currentSection: 'welcome',
+            entityData: {},
+            selectedIG: null,
+            currentControl: 0,
+            assessmentData: {},
+            results: {}
+        };
+
+        // CIS Controls Data Structure
+        const cisControls = [
+            {
+                id: 1,
+                nameAr: 'جرد ومراقبة أصول المؤسسة',
+                nameEn: 'Inventory and Control of Enterprise Assets',
+                safeguards: { total: 5, ig1: 4, ig2: 1, ig3: 0 },
+                whyCriticalAr: 'لا يمكن حماية ما لا نعرفه. جرد الأصول هو الأساس لجميع الضوابط الأمنية الأخرى.',
+                whyCriticalEn: 'You cannot protect what you do not know exists. Asset inventory is the foundation for all other security controls.',
+                questions: [
+                    {
+                        textAr: 'هل لديكم جرد محدث ودقيق لجميع الأجهزة في الشبكة؟',
+                        textEn: 'Do you maintain an accurate, up-to-date inventory of all devices on the network?'
+                    },
+                    {
+                        textAr: 'هل يتم تحديث جرد الأصول تلقائياً عند إضافة أجهزة جديدة؟',
+                        textEn: 'Is the asset inventory automatically updated when new devices are added?'
+                    },
+                    {
+                        textAr: 'هل يتم تصنيف الأصول حسب الأهمية والحساسية؟',
+                        textEn: 'Are assets classified by criticality and sensitivity?'
+                    },
+                    {
+                        textAr: 'هل يتم إزالة الأجهزة غير المصرح بها من الشبكة؟',
+                        textEn: 'Are unauthorized devices removed from the network?'
+                    }
+                ]
+            },
+            {
+                id: 2,
+                nameAr: 'جرد ومراقبة الأصول البرمجية',
+                nameEn: 'Inventory and Control of Software Assets',
+                safeguards: { total: 7, ig1: 4, ig2: 3, ig3: 0 },
+                whyCriticalAr: 'البرمجيات غير المصرح بها تشكل مخاطر أمنية كبيرة وقد تحتوي على ثغرات أو برمجيات خبيثة.',
+                whyCriticalEn: 'Unauthorized software poses significant security risks and may contain vulnerabilities or malware.',
+                questions: [
+                    {
+                        textAr: 'هل لديكم قائمة محدثة بجميع البرمجيات المثبتة على الأنظمة؟',
+                        textEn: 'Do you maintain an updated list of all software installed on systems?'
+                    },
+                    {
+                        textAr: 'هل يتم حظر تثبيت البرمجيات غير المصرح بها؟',
+                        textEn: 'Is the installation of unauthorized software blocked?'
+                    },
+                    {
+                        textAr: 'هل يتم فحص البرمجيات للتأكد من خلوها من البرمجيات الخبيثة؟',
+                        textEn: 'Are software applications scanned for malware?'
+                    },
+                    {
+                        textAr: 'هل يتم تحديث سجل البرمجيات بانتظام؟',
+                        textEn: 'Is the software inventory updated regularly?'
+                    }
+                ]
+            },
+            {
+                id: 3,
+                nameAr: 'حماية البيانات',
+                nameEn: 'Data Protection',
+                safeguards: { total: 14, ig1: 6, ig2: 5, ig3: 3 },
+                whyCriticalAr: 'البيانات هي الأصل الأهم في المؤسسة وحمايتها أساسية للحفاظ على الخصوصية والامتثال.',
+                whyCriticalEn: 'Data is the most valuable asset and protecting it is essential for privacy and compliance.',
+                questions: [
+                    {
+                        textAr: 'هل يتم تصنيف البيانات حسب مستوى الحساسية؟',
+                        textEn: 'Are data classified by sensitivity levels?'
+                    },
+                    {
+                        textAr: 'هل يتم تشفير البيانات الحساسة أثناء التخزين والنقل؟',
+                        textEn: 'Are sensitive data encrypted during storage and transmission?'
+                    },
+                    {
+                        textAr: 'هل توجد سياسات واضحة للاحتفاظ بالبيانات وحذفها؟',
+                        textEn: 'Are there clear data retention and deletion policies?'
+                    },
+                    {
+                        textAr: 'هل يتم تسجيل ومراقبة الوصول إلى البيانات الحساسة؟',
+                        textEn: 'Is access to sensitive data logged and monitored?'
+                    }
+                ]
+            },
+            {
+                id: 4,
+                nameAr: 'التكوين الآمن للأصول والبرمجيات',
+                nameEn: 'Secure Configuration of Enterprise Assets and Software',
+                safeguards: { total: 12, ig1: 7, ig2: 4, ig3: 1 },
+                whyCriticalAr: 'التكوين الافتراضي للأنظمة غالباً ما يكون غير آمن ويتطلب تعديل لضمان الحماية.',
+                whyCriticalEn: 'Default system configurations are often insecure and require modification to ensure protection.',
+                questions: [
+                    {
+                        textAr: 'هل توجد معايير موثقة للتكوين الآمن للأنظمة؟',
+                        textEn: 'Are there documented secure configuration standards for systems?'
+                    },
+                    {
+                        textAr: 'هل يتم تعطيل الخدمات والبروتوكولات غير الضرورية؟',
+                        textEn: 'Are unnecessary services and protocols disabled?'
+                    },
+                    {
+                        textAr: 'هل يتم مراقبة الانحرافات عن التكوين الآمن؟',
+                        textEn: 'Are deviations from secure configurations monitored?'
+                    },
+                    {
+                        textAr: 'هل يتم مراجعة التكوينات الأمنية بانتظام؟',
+                        textEn: 'Are security configurations reviewed regularly?'
+                    }
+                ]
+            },
+            {
+                id: 5,
+                nameAr: 'إدارة الحسابات',
+                nameEn: 'Account Management',
+                safeguards: { total: 6, ig1: 4, ig2: 2, ig3: 0 },
+                whyCriticalAr: 'إدارة دورة حياة الحسابات بشكل صحيح يمنع الوصول غير المصرح به ويقلل من المخاطر.',
+                whyCriticalEn: 'Proper account lifecycle management prevents unauthorized access and reduces risks.',
+                questions: [
+                    {
+                        textAr: 'هل يتم تعطيل حسابات الموظفين المغادرين فوراً؟',
+                        textEn: 'Are departing employee accounts disabled immediately?'
+                    },
+                    {
+                        textAr: 'هل يتم مراجعة صلاحيات الحسابات بشكل دوري؟',
+                        textEn: 'Are account privileges reviewed periodically?'
+                    },
+                    {
+                        textAr: 'هل توجد سياسات قوية لكلمات المرور؟',
+                        textEn: 'Are there strong password policies in place?'
+                    },
+                    {
+                        textAr: 'هل يتم رصد محاولات الوصول المشبوهة؟',
+                        textEn: 'Are suspicious access attempts monitored?'
+                    }
+                ]
+            },
+            {
+                id: 6,
+                nameAr: 'إدارة التحكم في الوصول',
+                nameEn: 'Access Control Management',
+                safeguards: { total: 8, ig1: 5, ig2: 2, ig3: 1 },
+                whyCriticalAr: 'التحكم في الوصول يضمن أن المستخدمين يحصلون فقط على الصلاحيات اللازمة لأداء مهامهم.',
+                whyCriticalEn: 'Access control ensures users only have the necessary permissions to perform their duties.',
+                questions: [
+                    {
+                        textAr: 'هل يتم تطبيق مبدأ أقل الصلاحيات اللازمة؟',
+                        textEn: 'Is the principle of least privilege applied?'
+                    },
+                    {
+                        textAr: 'هل يتم استخدام المصادقة متعددة العوامل؟',
+                        textEn: 'Is multi-factor authentication used?'
+                    },
+                    {
+                        textAr: 'هل يتم مراقبة وتسجيل الصلاحيات الإدارية؟',
+                        textEn: 'Are administrative privileges monitored and logged?'
+                    },
+                    {
+                        textAr: 'هل توجد ضوابط خاصة للوصول عن بعد؟',
+                        textEn: 'Are there specific controls for remote access?'
+                    }
+                ]
+            },
+            {
+                id: 7,
+                nameAr: 'الإدارة المستمرة للثغرات',
+                nameEn: 'Continuous Vulnerability Management',
+                safeguards: { total: 7, ig1: 4, ig2: 3, ig3: 0 },
+                whyCriticalAr: 'اكتشاف ومعالجة الثغرات الأمنية بسرعة يمنع استغلالها من قبل المهاجمين.',
+                whyCriticalEn: 'Rapidly identifying and addressing security vulnerabilities prevents their exploitation by attackers.',
+                questions: [
+                    {
+                        textAr: 'هل يتم إجراء فحوصات دورية للثغرات الأمنية؟',
+                        textEn: 'Are regular vulnerability scans conducted?'
+                    },
+                    {
+                        textAr: 'هل يتم تحديد أولويات معالجة الثغرات حسب المخاطر؟',
+                        textEn: 'Are vulnerabilities prioritized for remediation based on risk?'
+                    },
+                    {
+                        textAr: 'هل يتم تطبيق التحديثات الأمنية في الوقت المناسب؟',
+                        textEn: 'Are security updates applied in a timely manner?'
+                    },
+                    {
+                        textAr: 'هل يتم تتبع حالة معالجة الثغرات المكتشفة؟',
+                        textEn: 'Is the status of vulnerability remediation tracked?'
+                    }
+                ]
+            },
+            {
+                id: 8,
+                nameAr: 'إدارة سجلات التدقيق',
+                nameEn: 'Audit Log Management',
+                safeguards: { total: 12, ig1: 5, ig2: 5, ig3: 2 },
+                whyCriticalAr: 'سجلات التدقيق ضرورية للكشف عن الأنشطة المشبوهة والاستجابة للحوادث الأمنية.',
+                whyCriticalEn: 'Audit logs are essential for detecting suspicious activities and responding to security incidents.',
+                questions: [
+                    {
+                        textAr: 'هل يتم تفعيل تسجيل الأحداث على جميع الأنظمة الحرجة؟',
+                        textEn: 'Is event logging enabled on all critical systems?'
+                    },
+                    {
+                        textAr: 'هل يتم حماية سجلات التدقيق من التلاعب؟',
+                        textEn: 'Are audit logs protected from tampering?'
+                    },
+                    {
+                        textAr: 'هل يتم مراجعة وتحليل السجلات بانتظام؟',
+                        textEn: 'Are logs regularly reviewed and analyzed?'
+                    },
+                    {
+                        textAr: 'هل تستخدم أدوات آلية لتحليل السجلات؟',
+                        textEn: 'Are automated tools used for log analysis?'
+                    }
+                ]
+            },
+            {
+                id: 9,
+                nameAr: 'حماية البريد الإلكتروني ومتصفح الويب',
+                nameEn: 'Email and Web Browser Protections',
+                safeguards: { total: 7, ig1: 5, ig2: 2, ig3: 0 },
+                whyCriticalAr: 'البريد الإلكتروني والتصفح هما أكثر نقاط الدخول شيوعاً للهجمات السيبرانية.',
+                whyCriticalEn: 'Email and web browsing are the most common attack vectors for cyber threats.',
+                questions: [
+                    {
+                        textAr: 'هل يتم فلترة البريد الإلكتروني للحماية من البرمجيات الخبيثة؟',
+                        textEn: 'Is email filtered for malware protection?'
+                    },
+                    {
+                        textAr: 'هل يتم حظر الروابط والمرفقات الخبيثة؟',
+                        textEn: 'Are malicious links and attachments blocked?'
+                    },
+                    {
+                        textAr: 'هل توجد ضوابط لتصفح الإنترنت؟',
+                        textEn: 'Are there web browsing controls in place?'
+                    },
+                    {
+                        textAr: 'هل يتم تحديث المتصفحات والإضافات بانتظام؟',
+                        textEn: 'Are browsers and plugins updated regularly?'
+                    }
+                ]
+            },
+            {
+                id: 10,
+                nameAr: 'الدفاعات ضد البرمجيات الخبيثة',
+                nameEn: 'Malware Defenses',
+                safeguards: { total: 7, ig1: 5, ig2: 2, ig3: 0 },
+                whyCriticalAr: 'البرمجيات الخبيثة تشكل تهديداً مستمراً وتتطلب دفاعات متعددة الطبقات.',
+                whyCriticalEn: 'Malware poses a persistent threat and requires multi-layered defenses.',
+                questions: [
+                    {
+                        textAr: 'هل يتم استخدام برامج مكافحة الفيروسات المحدثة؟',
+                        textEn: 'Are updated antivirus solutions deployed?'
+                    },
+                    {
+                        textAr: 'هل يتم فحص الملفات قبل فتحها أو تنفيذها؟',
+                        textEn: 'Are files scanned before opening or execution?'
+                    },
+                    {
+                        textAr: 'هل تستخدم أدوات الكشف المتقدمة عن التهديدات؟',
+                        textEn: 'Are advanced threat detection tools used?'
+                    },
+                    {
+                        textAr: 'هل يتم حظر تنفيذ البرمجيات في مواقع محددة؟',
+                        textEn: 'Is software execution blocked in specific locations?'
+                    }
+                ]
+            },
+            {
+                id: 11,
+                nameAr: 'استعادة البيانات',
+                nameEn: 'Data Recovery',
+                safeguards: { total: 5, ig1: 4, ig2: 1, ig3: 0 },
+                whyCriticalAr: 'القدرة على استعادة البيانات ضرورية لاستمرارية العمل بعد الحوادث الأمنية.',
+                whyCriticalEn: 'The ability to recover data is essential for business continuity after security incidents.',
+                questions: [
+                    {
+                        textAr: 'هل يتم إجراء نسخ احتياطية منتظمة للبيانات؟',
+                        textEn: 'Are regular data backups performed?'
+                    },
+                    {
+                        textAr: 'هل يتم تخزين النسخ الاحتياطية في مواقع منفصلة؟',
+                        textEn: 'Are backups stored in separate locations?'
+                    },
+                    {
+                        textAr: 'هل يتم اختبار عملية استعادة البيانات بانتظام؟',
+                        textEn: 'Is data recovery regularly tested?'
+                    },
+                    {
+                        textAr: 'هل النسخ الاحتياطية محمية من التشفير الخبيث؟',
+                        textEn: 'Are backups protected from ransomware encryption?'
+                    }
+                ]
+            },
+            {
+                id: 12,
+                nameAr: 'إدارة البنية التحتية للشبكة',
+                nameEn: 'Network Infrastructure Management',
+                safeguards: { total: 8, ig1: 4, ig2: 3, ig3: 1 },
+                whyCriticalAr: 'الشبكة هي العمود الفقري للمؤسسة وتأمينها ضروري لحماية جميع الأصول.',
+                whyCriticalEn: 'The network is the backbone of the organization and securing it is essential for protecting all assets.',
+                questions: [
+                    {
+                        textAr: 'هل يتم تقسيم الشبكة إلى قطاعات أمنية؟',
+                        textEn: 'Is the network segmented into security zones?'
+                    },
+                    {
+                        textAr: 'هل يتم استخدام الجدران النارية لحماية الشبكة؟',
+                        textEn: 'Are firewalls used to protect the network?'
+                    },
+                    {
+                        textAr: 'هل يتم تأمين أجهزة الشبكة وتحديثها؟',
+                        textEn: 'Are network devices secured and updated?'
+                    },
+                    {
+                        textAr: 'هل يتم مراقبة حركة المرور في الشبكة؟',
+                        textEn: 'Is network traffic monitored?'
+                    }
+                ]
+            },
+            {
+                id: 13,
+                nameAr: 'مراقبة الشبكة والدفاع عنها',
+                nameEn: 'Network Monitoring and Defense',
+                safeguards: { total: 11, ig1: 3, ig2: 5, ig3: 3 },
+                whyCriticalAr: 'المراقبة المستمرة للشبكة تمكن من الكشف المبكر للتهديدات والاستجابة السريعة.',
+                whyCriticalEn: 'Continuous network monitoring enables early threat detection and rapid response.',
+                questions: [
+                    {
+                        textAr: 'هل يتم استخدام أنظمة كشف التسلل؟',
+                        textEn: 'Are intrusion detection systems deployed?'
+                    },
+                    {
+                        textAr: 'هل توجد مراقبة مستمرة لحركة المرور؟',
+                        textEn: 'Is there continuous traffic monitoring?'
+                    },
+                    {
+                        textAr: 'هل يتم تحليل البيانات المشفرة؟',
+                        textEn: 'Is encrypted data analyzed?'
+                    },
+                    {
+                        textAr: 'هل توجد قدرة على الاستجابة السريعة للتهديدات؟',
+                        textEn: 'Is there rapid threat response capability?'
+                    }
+                ]
+            },
+            {
+                id: 14,
+                nameAr: 'التوعية الأمنية والتدريب على المهارات',
+                nameEn: 'Security Awareness and Skills Training',
+                safeguards: { total: 9, ig1: 5, ig2: 4, ig3: 0 },
+                whyCriticalAr: 'الموظفون هم خط الدفاع الأول وتدريبهم ضروري لمنع الهجمات الاجتماعية.',
+                whyCriticalEn: 'Employees are the first line of defense and their training is essential for preventing social attacks.',
+                questions: [
+                    {
+                        textAr: 'هل يتم تقديم تدريب أمني دوري للموظفين؟',
+                        textEn: 'Is regular security training provided to employees?'
+                    },
+                    {
+                        textAr: 'هل يتم إجراء تمارين محاكاة للهجمات الاجتماعية؟',
+                        textEn: 'Are social engineering simulation exercises conducted?'
+                    },
+                    {
+                        textAr: 'هل يغطي التدريب التهديدات الحديثة؟',
+                        textEn: 'Does training cover current threats?'
+                    },
+                    {
+                        textAr: 'هل يتم قياس فعالية برامج التوعية؟',
+                        textEn: 'Is the effectiveness of awareness programs measured?'
+                    }
+                ]
+            },
+            {
+                id: 15,
+                nameAr: 'إدارة مقدمي الخدمات',
+                nameEn: 'Service Provider Management',
+                safeguards: { total: 7, ig1: 3, ig2: 3, ig3: 1 },
+                whyCriticalAr: 'مقدمو الخدمات الخارجيون قد يشكلون مخاطر أمنية ويحتاجون لإدارة خاصة.',
+                whyCriticalEn: 'External service providers may pose security risks and require special management.',
+                questions: [
+                    {
+                        textAr: 'هل يتم تقييم الوضع الأمني لمقدمي الخدمات؟',
+                        textEn: 'Are service providers\' security postures assessed?'
+                    },
+                    {
+                        textAr: 'هل تتضمن العقود بنود أمنية واضحة؟',
+                        textEn: 'Do contracts include clear security clauses?'
+                    },
+                    {
+                        textAr: 'هل يتم مراقبة امتثال مقدمي الخدمات؟',
+                        textEn: 'Is service provider compliance monitored?'
+                    },
+                    {
+                        textAr: 'هل يتم مراجعة وصول مقدمي الخدمات بانتظام؟',
+                        textEn: 'Is service provider access regularly reviewed?'
+                    }
+                ]
+            },
+            {
+                id: 16,
+                nameAr: 'أمن البرمجيات التطبيقية',
+                nameEn: 'Application Software Security',
+                safeguards: { total: 14, ig1: 3, ig2: 7, ig3: 4 },
+                whyCriticalAr: 'التطبيقات تحتوي على ثغرات أمنية ويجب تأمينها في جميع مراحل تطويرها.',
+                whyCriticalEn: 'Applications contain security vulnerabilities and must be secured throughout their development lifecycle.',
+                questions: [
+                    {
+                        textAr: 'هل يتم دمج الأمن في عملية تطوير التطبيقات؟',
+                        textEn: 'Is security integrated into the application development process?'
+                    },
+                    {
+                        textAr: 'هل يتم إجراء فحوصات أمنية للتطبيقات؟',
+                        textEn: 'Are security assessments conducted for applications?'
+                    },
+                    {
+                        textAr: 'هل يتم تدريب المطورين على الممارسات الآمنة؟',
+                        textEn: 'Are developers trained on secure coding practices?'
+                    },
+                    {
+                        textAr: 'هل يتم إدارة المكتبات والمكونات الخارجية؟',
+                        textEn: 'Are third-party libraries and components managed?'
+                    }
+                ]
+            },
+            {
+                id: 17,
+                nameAr: 'إدارة الاستجابة للحوادث',
+                nameEn: 'Incident Response Management',
+                safeguards: { total: 9, ig1: 4, ig2: 4, ig3: 1 },
+                whyCriticalAr: 'الاستجابة السريعة والفعالة للحوادث تقلل من الأضرار وتساعد في التعافي.',
+                whyCriticalEn: 'Rapid and effective incident response reduces damage and aids in recovery.',
+                questions: [
+                    {
+                        textAr: 'هل توجد خطة موثقة للاستجابة للحوادث؟',
+                        textEn: 'Is there a documented incident response plan?'
+                    },
+                    {
+                        textAr: 'هل يوجد فريق مخصص للاستجابة للحوادث؟',
+                        textEn: 'Is there a dedicated incident response team?'
+                    },
+                    {
+                        textAr: 'هل يتم إجراء تمارين دورية لاختبار الاستجابة؟',
+                        textEn: 'Are regular incident response exercises conducted?'
+                    },
+                    {
+                        textAr: 'هل يتم توثيق وتحليل الحوادث للتعلم منها؟',
+                        textEn: 'Are incidents documented and analyzed for lessons learned?'
+                    }
+                ]
+            },
+            {
+                id: 18,
+                nameAr: 'اختبار الاختراق',
+                nameEn: 'Penetration Testing',
+                safeguards: { total: 5, ig1: 0, ig2: 2, ig3: 3 },
+                whyCriticalAr: 'اختبار الاختراق يكشف الثغرات الحقيقية ويساعد في التحقق من فعالية الضوابط الأمنية.',
+                whyCriticalEn: 'Penetration testing reveals real vulnerabilities and helps verify the effectiveness of security controls.',
+                questions: [
+                    {
+                        textAr: 'هل يتم إجراء اختبارات اختراق دورية؟',
+                        textEn: 'Are regular penetration tests conducted?'
+                    },
+                    {
+                        textAr: 'هل تغطي الاختبارات جميع الأنظمة والشبكات؟',
+                        textEn: 'Do tests cover all systems and networks?'
+                    },
+                    {
+                        textAr: 'هل يتم معالجة الثغرات المكتشفة؟',
+                        textEn: 'Are discovered vulnerabilities remediated?'
+                    },
+                    {
+                        textAr: 'هل يتم الاستعانة بجهات خارجية مستقلة؟',
+                        textEn: 'Are independent third parties engaged?'
+                    }
+                ]
+            }
+        ];
+
+        // Translation data
+        const translations = {
+            ar: {
+                headerTitle: 'أداة التقييم الذاتي لضوابط إطار CIS',
+                headerSubtitle: 'للجهات الحكومية الكويتية - الإصدار 8.1',
+                navWelcome: 'الرئيسية',
+                navEntity: 'معلومات الجهة',
+                navIG: 'اختيار المجموعة',
+                navAssessment: 'التقييم',
+                navResults: 'النتائج',
+                navResources: 'المصادر',
+                welcomeTitle: 'مرحباً بكم في أداة التقييم الذاتي لضوابط إطار CIS',
+                welcomeDesc: 'أداة شاملة مطورة خصيصاً للجهات الحكومية الكويتية لتقييم مستوى الامتثال لضوابط مركز أمان الإنترنت (CIS Controls v8) ورفع مستوى الاستعدادات الأمنية السيبرانية',
+                startBtn: 'بدء التقييم',
+                statControls: 'ضابط أمني',
+                statSafeguards: 'ضمانة حماية',
+                statGroups: 'مجموعات تنفيذية',
+                statVision: 'رؤية الكويت'
+            },
+            en: {
+                headerTitle: 'CIS Controls Self-Assessment Tool',
+                headerSubtitle: 'For Kuwait Government Entities - Version 8.1',
+                navWelcome: 'Home',
+                navEntity: 'Entity Info',
+                navIG: 'Group Selection',
+                navAssessment: 'Assessment',
+                navResults: 'Results',
+                navResources: 'Resources',
+                welcomeTitle: 'Welcome to CIS Controls Self-Assessment Tool',
+                welcomeDesc: 'A comprehensive tool specifically developed for Kuwait government entities to assess compliance with CIS Controls v8 and enhance cybersecurity readiness',
+                startBtn: 'Start Assessment',
+                statControls: 'Security Controls',
+                statSafeguards: 'Safeguards',
+                statGroups: 'Implementation Groups',
+                statVision: 'Kuwait Vision'
+            }
+        };
+
+        // Language Toggle Function
+        function toggleLanguage() {
+            const currentLang = appState.currentLanguage;
+            const newLang = currentLang === 'ar' ? 'en' : 'ar';
+            appState.currentLanguage = newLang;
+            
+            document.body.setAttribute('data-lang', newLang);
+            document.documentElement.setAttribute('lang', newLang);
+            document.documentElement.setAttribute('dir', newLang === 'ar' ? 'rtl' : 'ltr');
+            
+            updateTexts();
+            updateLangToggleButton();
+        }
+
+        function updateTexts() {
+            const lang = appState.currentLanguage;
+            const t = translations[lang];
+            
+            // Update header
+            document.getElementById('headerTitle').textContent = t.headerTitle;
+            document.getElementById('headerSubtitle').textContent = t.headerSubtitle;
+            
+            // Update navigation
+            document.getElementById('navWelcome').textContent = t.navWelcome;
+            document.getElementById('navEntity').textContent = t.navEntity;
+            document.getElementById('navIG').textContent = t.navIG;
+            document.getElementById('navAssessment').textContent = t.navAssessment;
+            document.getElementById('navResults').textContent = t.navResults;
+            document.getElementById('navResources').textContent = t.navResources;
+            
+            // Update welcome section
+            document.getElementById('welcomeTitle').textContent = t.welcomeTitle;
+            document.getElementById('welcomeDesc').textContent = t.welcomeDesc;
+            document.getElementById('startBtn').textContent = t.startBtn;
+            document.getElementById('statControls').textContent = t.statControls;
+            document.getElementById('statSafeguards').textContent = t.statSafeguards;
+            document.getElementById('statGroups').textContent = t.statGroups;
+            document.getElementById('statVision').textContent = t.statVision;
+        }
+
+        function updateLangToggleButton() {
+            const langToggle = document.getElementById('langToggle');
+            langToggle.textContent = appState.currentLanguage === 'ar' ? 'English' : 'عربي';
+        }
+
+        // Navigation Functions
+        function showSection(sectionId) {
+            // Hide all sections
+            const sections = document.querySelectorAll('.section');
+            sections.forEach(section => section.classList.remove('active'));
+            
+            // Show selected section
+            document.getElementById(sectionId).classList.add('active');
+            
+            // Update navigation active state
+            const navTabs = document.querySelectorAll('.nav-tab');
+            navTabs.forEach(tab => tab.classList.remove('active'));
+            
+            // Find and activate corresponding nav tab
+            const sectionToNavMap = {
+                'welcome': 'navWelcome',
+                'entity-info': 'navEntity',
+                'ig-selection': 'navIG',
+                'assessment': 'navAssessment',
+                'results': 'navResults',
+                'resources': 'navResources'
+            };
+            
+            if (sectionToNavMap[sectionId]) {
+                document.getElementById(sectionToNavMap[sectionId]).classList.add('active');
+            }
+            
+            appState.currentSection = sectionId;
+        }
+
+        // Start Assessment Function
+        function startAssessment() {
+            showSection('entity-info');
+        }
+
+        // Entity Form Handler
+        function initializeEntityForm() {
+            const form = document.getElementById('entityForm');
+            const dateField = document.getElementById('assessmentDate');
+            
+            // Set current date
+            const today = new Date().toISOString().split('T')[0];
+            dateField.value = today;
+            
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                // Collect entity data
+                appState.entityData = {
+                    nameAr: document.getElementById('entityNameAr').value,
+                    nameEn: document.getElementById('entityNameEn').value,
+                    sector: document.getElementById('sector').value,
+                    size: document.getElementById('entitySize').value,
+                    contactName: document.getElementById('contactName').value,
+                    contactEmail: document.getElementById('contactEmail').value,
+                    assessmentDate: dateField.value
+                };
+                
+                // Move to IG selection
+                showSection('ig-selection');
+            });
+        }
+
+        // Implementation Group Selection
+        function selectIG(igType) {
+            // Remove selection from all cards
+            const igCards = document.querySelectorAll('.ig-card');
+            igCards.forEach(card => card.classList.remove('selected'));
+            
+            // Add selection to clicked card
+            document.getElementById(igType + 'Card').classList.add('selected');
+            
+            appState.selectedIG = igType;
+            
+            // Enable continue button
+            document.getElementById('continueAssessmentBtn').disabled = false;
+        }
+
+        function continueToAssessment() {
+            if (!appState.selectedIG) {
+                alert(appState.currentLanguage === 'ar' ? 
+                    'يرجى اختيار المجموعة التنفيذية المناسبة' : 
+                    'Please select the appropriate Implementation Group');
+                return;
+            }
+            
+            initializeAssessment();
+            showSection('assessment');
+        }
+
+        // Assessment Functions
+        function initializeAssessment() {
+            // Initialize assessment data structure
+            cisControls.forEach(control => {
+                appState.assessmentData[control.id] = {
+                    questions: {},
+                    notes: '',
+                    completed: false
+                };
+            });
+            
+            generateControlsList();
+            showControl(0);
+        }
+
+        function generateControlsList() {
+            const controlsList = document.getElementById('controlsList');
+            controlsList.innerHTML = '';
+            
+            cisControls.forEach((control, index) => {
+                const controlItem = document.createElement('div');
+                controlItem.className = 'control-item';
+                controlItem.id = `control-item-${index}`;
+                controlItem.onclick = () => showControl(index);
+                
+                const lang = appState.currentLanguage;
+                const controlName = lang === 'ar' ? control.nameAr : control.nameEn;
+                
+                controlItem.innerHTML = `
+                    <div style="font-weight: 600; margin-bottom: 4px;">${control.id}. ${controlName}</div>
+                    <div style="font-size: 11px; opacity: 0.8;">
+                        ${control.safeguards.total} ${lang === 'ar' ? 'ضمانة' : 'safeguards'}
+                    </div>
+                `;
+                
+                controlsList.appendChild(controlItem);
+            });
+        }
+
+        function showControl(index) {
+            if (index < 0 || index >= cisControls.length) return;
+            
+            appState.currentControl = index;
+            const control = cisControls[index];
+            const lang = appState.currentLanguage;
+            
+            // Update sidebar selection
+            const controlItems = document.querySelectorAll('.control-item');
+            controlItems.forEach(item => item.classList.remove('active'));
+            document.getElementById(`control-item-${index}`).classList.add('active');
+            
+            // Generate control content
+            const controlContent = document.getElementById('controlContent');
+            controlContent.innerHTML = generateControlHTML(control, lang);
+            
+            // Load existing answers if any
+            loadControlAnswers(control.id);
+            
+            // Update navigation buttons
+            updateControlNavigation();
+            
+            // Update progress
+            updateProgress();
+        }
+
+        function generateControlHTML(control, lang) {
+            const controlName = lang === 'ar' ? control.nameAr : control.nameEn;
+            const whyCritical = lang === 'ar' ? control.whyCriticalAr : control.whyCriticalEn;
+            
+            let html = `
+                <div class="control-header">
+                    <h2 class="control-title">${control.id}. ${controlName}</h2>
+                    <div class="safeguard-badges">
+                        <span class="badge">الإجمالي: ${control.safeguards.total}</span>
+                        <span class="badge">IG1: ${control.safeguards.ig1}</span>
+                        <span class="badge">IG2: ${control.safeguards.ig2}</span>
+                        <span class="badge">IG3: ${control.safeguards.ig3}</span>
+                    </div>
+                </div>
+                
+                <div class="why-critical">
+                    <h4>${lang === 'ar' ? 'لماذا هذا الضابط حاسم؟' : 'Why is this Control Critical?'}</h4>
+                    <p>${whyCritical}</p>
+                </div>
+            `;
+            
+            // Add questions
+            control.questions.forEach((question, qIndex) => {
+                const questionText = lang === 'ar' ? question.textAr : question.textEn;
+                html += `
+                    <div class="question-group">
+                        <div class="question-title">${qIndex + 1}. ${questionText}</div>
+                        <div class="radio-options">
+                            <label class="radio-option">
+                                <input type="radio" name="q${control.id}_${qIndex}" value="100">
+                                <span>${lang === 'ar' ? 'مطبق بالكامل' : 'Fully Implemented'}</span>
+                            </label>
+                            <label class="radio-option">
+                                <input type="radio" name="q${control.id}_${qIndex}" value="50">
+                                <span>${lang === 'ar' ? 'مطبق جزئياً' : 'Partially Implemented'}</span>
+                            </label>
+                            <label class="radio-option">
+                                <input type="radio" name="q${control.id}_${qIndex}" value="0">
+                                <span>${lang === 'ar' ? 'غير مطبق' : 'Not Implemented'}</span>
+                            </label>
+                            <label class="radio-option">
+                                <input type="radio" name="q${control.id}_${qIndex}" value="na">
+                                <span>${lang === 'ar' ? 'غير قابل للتطبيق' : 'Not Applicable'}</span>
+                            </label>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            // Add notes section
+            html += `
+                <div class="form-group mt-24">
+                    <label class="form-label">
+                        ${lang === 'ar' ? 'ملاحظات وتفاصيل إضافية' : 'Notes and Additional Details'}
+                    </label>
+                    <textarea class="notes-textarea" id="notes_${control.id}" 
+                        placeholder="${lang === 'ar' ? 'أدخل أي ملاحظات أو تفاصيل إضافية...' : 'Enter any notes or additional details...'}">
+                    </textarea>
+                </div>
+            `;
+            
+            return html;
+        }
+
+        function loadControlAnswers(controlId) {
+            const assessmentData = appState.assessmentData[controlId];
+            if (!assessmentData) return;
+            
+            // Load radio button selections
+            Object.keys(assessmentData.questions).forEach(questionKey => {
+                const radioInputs = document.querySelectorAll(`input[name="${questionKey}"]`);
+                radioInputs.forEach(input => {
+                    if (input.value === assessmentData.questions[questionKey]) {
+                        input.checked = true;
+                    }
+                });
+            });
+            
+            // Load notes
+            const notesField = document.getElementById(`notes_${controlId}`);
+            if (notesField) {
+                notesField.value = assessmentData.notes || '';
+            }
+        }
+
+        function saveCurrentControlAnswers() {
+            const currentControlId = cisControls[appState.currentControl].id;
+            const assessmentData = appState.assessmentData[currentControlId];
+            
+            // Save radio button selections
+            const control = cisControls[appState.currentControl];
+            control.questions.forEach((question, qIndex) => {
+                const questionKey = `q${currentControlId}_${qIndex}`;
+                const selectedRadio = document.querySelector(`input[name="${questionKey}"]:checked`);
+                if (selectedRadio) {
+                    assessmentData.questions[questionKey] = selectedRadio.value;
+                }
+            });
+            
+            // Save notes
+            const notesField = document.getElementById(`notes_${currentControlId}`);
+            if (notesField) {
+                assessmentData.notes = notesField.value;
+            }
+            
+            // Check if control is completed
+            const totalQuestions = control.questions.length;
+            const answeredQuestions = Object.keys(assessmentData.questions).length;
+            assessmentData.completed = answeredQuestions === totalQuestions;
+            
+            // Update control item visual state
+            const controlItem = document.getElementById(`control-item-${appState.currentControl}`);
+            if (assessmentData.completed) {
+                controlItem.classList.add('completed');
+            } else {
+                controlItem.classList.remove('completed');
+            }
+        }
+
+        function updateControlNavigation() {
+            const prevBtn = document.getElementById('prevControlBtn');
+            const nextBtn = document.getElementById('nextControlBtn');
+            
+            prevBtn.disabled = appState.currentControl === 0;
+            nextBtn.textContent = appState.currentControl === cisControls.length - 1 ? 
+                (appState.currentLanguage === 'ar' ? 'عرض النتائج' : 'View Results') :
+                (appState.currentLanguage === 'ar' ? 'الضابط التالي' : 'Next Control');
+        }
+
+        function updateProgress() {
+            const completedControls = Object.values(appState.assessmentData)
+                .filter(data => data.completed).length;
+            const totalControls = cisControls.length;
+            const percentage = Math.round((completedControls / totalControls) * 100);
+            
+            document.getElementById('progressFill').style.width = percentage + '%';
+            document.getElementById('progressText').textContent = 
+                appState.currentLanguage === 'ar' ? 
+                `${completedControls} من ${totalControls} ضابط مكتمل` :
+                `${completedControls} of ${totalControls} controls completed`;
+        }
+
+        function previousControl() {
+            if (appState.currentControl > 0) {
+                saveCurrentControlAnswers();
+                showControl(appState.currentControl - 1);
+            }
+        }
+
+        function nextControl() {
+            saveCurrentControlAnswers();
+            
+            if (appState.currentControl < cisControls.length - 1) {
+                showControl(appState.currentControl + 1);
+            } else {
+                // All controls completed, show results
+                generateResults();
+                showSection('results');
+            }
+        }
+
+        function saveProgress() {
+            saveCurrentControlAnswers();
+            updateProgress();
+            
+            const message = appState.currentLanguage === 'ar' ? 
+                'تم حفظ التقدم بنجاح' : 'Progress saved successfully';
+            alert(message);
+        }
+
+        // Results Generation
+        function generateResults() {
+            const results = calculateResults();
+            appState.results = results;
+            
+            displayResultsSummary(results);
+            generateCharts(results);
+            generateFindingsTable(results);
+            generateRecommendations(results);
+        }
+
+        function calculateResults() {
+            let totalScore = 0;
+            let totalQuestions = 0;
+            let completedControls = 0;
+            let controlScores = [];
+            
+            cisControls.forEach(control => {
+                const assessmentData = appState.assessmentData[control.id];
+                let controlScore = 0;
+                let controlQuestions = 0;
+                
+                control.questions.forEach((question, qIndex) => {
+                    const questionKey = `q${control.id}_${qIndex}`;
+                    const answer = assessmentData.questions[questionKey];
+                    
+                    if (answer && answer !== 'na') {
+                        controlScore += parseInt(answer);
+                        controlQuestions++;
+                    }
+                });
+                
+                const controlPercentage = controlQuestions > 0 ? 
+                    Math.round((controlScore / (controlQuestions * 100)) * 100) : 0;
+                
+                controlScores.push({
+                    id: control.id,
+                    name: appState.currentLanguage === 'ar' ? control.nameAr : control.nameEn,
+                    score: controlPercentage,
+                    completed: assessmentData.completed
+                });
+                
+                if (assessmentData.completed) {
+                    completedControls++;
+                    totalScore += controlScore;
+                    totalQuestions += controlQuestions * 100;
+                }
+            });
+            
+            const overallScore = totalQuestions > 0 ? 
+                Math.round((totalScore / totalQuestions) * 100) : 0;
+            
+            return {
+                overallScore,
+                completedControls,
+                attentionNeeded: cisControls.length - completedControls,
+                controlScores,
+                maturityLevel: getMaturityLevel(overallScore)
+            };
+        }
+
+        function getMaturityLevel(score) {
+            if (score >= 91) return { ar: 'مستوى محسّن', en: 'Optimized Level' };
+            if (score >= 76) return { ar: 'مستوى مُدار', en: 'Managed Level' };
+            if (score >= 51) return { ar: 'مستوى محدد', en: 'Defined Level' };
+            if (score >= 26) return { ar: 'مستوى متطور', en: 'Developing Level' };
+            return { ar: 'مستوى أولي', en: 'Initial Level' };
+        }
+
+        function displayResultsSummary(results) {
+            const lang = appState.currentLanguage;
+            
+            document.getElementById('overallScore').textContent = results.overallScore + '%';
+            document.getElementById('maturityLevel').textContent = 
+                lang === 'ar' ? results.maturityLevel.ar : results.maturityLevel.en;
+            document.getElementById('implementedCount').textContent = results.completedControls;
+            document.getElementById('attentionCount').textContent = results.attentionNeeded;
+        }
+
+        function generateCharts(results) {
+            generateRadarChart(results);
+            generateBarChart(results);
+        }
+
+        function generateRadarChart(results) {
+            const ctx = document.getElementById('radarChart').getContext('2d');
+            
+            const labels = results.controlScores.map(control => 
+                `${appState.currentLanguage === 'ar' ? 'ضابط' : 'Control'} ${control.id}`);
+            const data = results.controlScores.map(control => control.score);
+            
+            new Chart(ctx, {
+                type: 'radar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: appState.currentLanguage === 'ar' ? 'مستوى الامتثال' : 'Compliance Level',
+                        data: data,
+                        backgroundColor: 'rgba(0, 51, 102, 0.2)',
+                        borderColor: 'rgba(0, 51, 102, 1)',
+                        pointBackgroundColor: 'rgba(212, 175, 55, 1)',
+                        pointBorderColor: 'rgba(212, 175, 55, 1)'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        r: {
+                            angleLines: {
+                                display: true
+                            },
+                            suggestedMin: 0,
+                            suggestedMax: 100
+                        }
+                    }
+                }
+            });
+        }
+
+        function generateBarChart(results) {
+            const ctx = document.getElementById('barChart').getContext('2d');
+            
+            // Calculate IG-specific scores
+            const igScores = calculateIGScores(results);
+            
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['IG1', 'IG2', 'IG3'],
+                    datasets: [{
+                        label: appState.currentLanguage === 'ar' ? 'مستوى الامتثال %' : 'Compliance Level %',
+                        data: [igScores.ig1, igScores.ig2, igScores.ig3],
+                        backgroundColor: [
+                            'rgba(0, 51, 102, 0.8)',
+                            'rgba(212, 175, 55, 0.8)',
+                            'rgba(0, 51, 102, 0.6)'
+                        ],
+                        borderColor: [
+                            'rgba(0, 51, 102, 1)',
+                            'rgba(212, 175, 55, 1)',
+                            'rgba(0, 51, 102, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 100
+                        }
+                    }
+                }
+            });
+        }
+
+        function calculateIGScores(results) {
+            // This is a simplified calculation
+            // In a real implementation, you'd calculate based on IG-specific controls
+            return {
+                ig1: Math.max(0, results.overallScore - 10),
+                ig2: results.overallScore,
+                ig3: Math.min(100, results.overallScore + 5)
+            };
+        }
+
+        function generateFindingsTable(results) {
+            const tbody = document.getElementById('findingsTableBody');
+            tbody.innerHTML = '';
+            
+            results.controlScores.forEach(control => {
+                const row = document.createElement('tr');
+                
+                let status = 'status-low';
+                let priority = 'High';
+                if (control.score >= 75) {
+                    status = 'status-high';
+                    priority = 'Low';
+                } else if (control.score >= 50) {
+                    status = 'status-medium';
+                    priority = 'Medium';
+                }
+                
+                row.innerHTML = `
+                    <td>${control.name}</td>
+                    <td>${control.score}%</td>
+                    <td><span class="status-indicator ${status}"></span></td>
+                    <td>${appState.currentLanguage === 'ar' ? 
+                        (priority === 'High' ? 'عالي' : priority === 'Medium' ? 'متوسط' : 'منخفض') : priority}</td>
+                `;
+                
+                tbody.appendChild(row);
+            });
+        }
+
+        function generateRecommendations(results) {
+            const content = document.getElementById('recommendationsContent');
+            const lang = appState.currentLanguage;
+            
+            // Find top priority controls (lowest scores)
+            const lowScoreControls = results.controlScores
+                .filter(c => c.score < 50)
+                .sort((a, b) => a.score - b.score)
+                .slice(0, 5);
+            
+            let html = `<h4>${lang === 'ar' ? 'أولويات التحسين' : 'Improvement Priorities'}</h4><ul>`;
+            
+            if (lowScoreControls.length === 0) {
+                html += `<li>${lang === 'ar' ? 'أداء ممتاز! لا توجد أولويات عاجلة.' : 'Excellent performance! No urgent priorities.'}</li>`;
+            } else {
+                lowScoreControls.forEach(control => {
+                    html += `<li>${lang === 'ar' ? 'تحسين' : 'Improve'} ${control.name} (${control.score}%)</li>`;
+                });
+            }
+            
+            html += `</ul>`;
+            
+            // Add general recommendations
+            html += `<h4>${lang === 'ar' ? 'التوصيات العامة' : 'General Recommendations'}</h4>`;
+            html += `<ul>`;
+            html += `<li>${lang === 'ar' ? 'راجع وحدث سياسات الأمن السيبراني' : 'Review and update cybersecurity policies'}</li>`;
+            html += `<li>${lang === 'ar' ? 'قم بتدريب الموظفين على أحدث التهديدات' : 'Train staff on latest threats'}</li>`;
+            html += `<li>${lang === 'ar' ? 'تنفيذ مراقبة مستمرة للأنظمة' : 'Implement continuous system monitoring'}</li>`;
+            html += `<li>${lang === 'ar' ? 'إجراء تقييمات دورية للمخاطر' : 'Conduct regular risk assessments'}</li>`;
+            html += `</ul>`;
+            
+            content.innerHTML = html;
+        }
+
+        // Export Functions
+        function exportPDF() {
+            alert(appState.currentLanguage === 'ar' ? 
+                'جاري إنشاء تقرير PDF...' : 'Generating PDF report...');
+            // Note: Full PDF generation would require more complex implementation
+        }
+
+        function exportExcel() {
+            const wb = XLSX.utils.book_new();
+            const wsData = [];
+            
+            // Add headers
+            wsData.push(['Control ID', 'Control Name', 'Score', 'Status']);
+            
+            // Add data
+            appState.results.controlScores.forEach(control => {
+                wsData.push([
+                    control.id,
+                    control.name,
+                    control.score + '%',
+                    control.completed ? 'Completed' : 'Incomplete'
+                ]);
+            });
+            
+            const ws = XLSX.utils.aoa_to_sheet(wsData);
+            XLSX.utils.book_append_sheet(wb, ws, 'CIS Assessment Results');
+            
+            XLSX.writeFile(wb, `CIS_Assessment_${appState.entityData.nameEn || 'Entity'}.xlsx`);
+        }
+
+        function emailResults() {
+            const email = appState.entityData.contactEmail || 'Site@hotmail.com';
+            const subject = encodeURIComponent('CIS Controls Assessment Results');
+            const body = encodeURIComponent(
+                `Assessment completed for ${appState.entityData.nameEn || 'Entity'}\n` +
+                `Overall Score: ${appState.results.overallScore}%\n` +
+                `Completed Controls: ${appState.results.completedControls}/${cisControls.length}`
+            );
+            
+            window.open(`mailto:${email}?subject=${subject}&body=${body}`);
+        }
+
+        function printResults() {
+            window.print();
+        }
+
+        // Initialize Application
+        document.addEventListener('DOMContentLoaded', function() {
+            // Set initial language
+            document.body.setAttribute('data-lang', 'ar');
+            document.documentElement.setAttribute('lang', 'ar');
+            document.documentElement.setAttribute('dir', 'rtl');
+            
+            // Initialize texts
+            updateTexts();
+            updateLangToggleButton();
+            
+            // Initialize entity form
+            initializeEntityForm();
+            
+            // Show welcome section
+            showSection('welcome');
+        });
+    </script>
+</body>
+</html>
