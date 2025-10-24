@@ -11,7 +11,7 @@
 
 ## Overview
 
-A comprehensive self-assessment tool specifically designed for Kuwait government entities to evaluate their cybersecurity readiness according to the CIS Controls v8 framework. This tool is based on scientific research about elevating cybersecurity preparedness in Kuwait government agencies through CIS framework implementation.
+A self-assessment tool specifically designed for Kuwait government entities to evaluate their cybersecurity readiness according to the CIS Controls v8 framework. This tool is based on scientific research about elevating cybersecurity preparedness in Kuwait government agencies through CIS framework implementation.
 
 ---
 
