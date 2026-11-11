@@ -15,7 +15,7 @@ A self-assessment tool specifically designed for Kuwait government entities to e
 
 ---
 
-## 🎯 Key Features | المميزات الرئيسية
+## Key Features | المميزات الرئيسية
 
 <div dir="rtl">
 
@@ -39,7 +39,7 @@ A self-assessment tool specifically designed for Kuwait government entities to e
 
 ---
 
-## 📊 CIS Controls v8 Structure | هيكل ضوابط CIS
+## CIS Controls v8 Structure | هيكل ضوابط CIS
 
 | # | Control (English) | الضابط (عربي) | Safeguards | IG1 | IG2 | IG3 |
 |---|---|---|:---:|:---:|:---:|:---:|
@@ -65,7 +65,7 @@ A self-assessment tool specifically designed for Kuwait government entities to e
 
 ---
 
-## 🚀 Getting Started | البدء السريع
+## Getting Started | البدء السريع
 
 ### Option 1: Web Application | التطبيق عبر الإنترنت
 
@@ -97,7 +97,7 @@ start index.html
 
 ---
 
-## 📖 How to Use | كيفية الاستخدام
+## How to Use | كيفية الاستخدام
 
 <div dir="rtl">
 
@@ -117,13 +117,13 @@ start index.html
 1. **Entity Information**: Enter entity name, sector, size, and contact information
 2. **Implementation Group Selection**: Choose IG1, IG2, or IG3 based on your entity's size and requirements
 3. **Self-Assessment**: Answer key assessment questions for each of the 18 controls
-4. **View Results**: Review comprehensive results dashboard with visualizations
+4. **View Results**: Review results dashboard with visualizations
 5. **Recommendations**: Review prioritized recommendations for security improvement
 6. **Export**: Save report as PDF or Excel, or email results
 
 ---
 
-## 🎓 Implementation Groups Guide | دليل المجموعات التنفيذية
+## Implementation Groups Guide | دليل المجموعات التنفيذية
 
 <div dir="rtl">
 
@@ -149,7 +149,7 @@ start index.html
 
 ---
 
-## 🏛️ Kuwait Context | السياق الكويتي
+## Kuwait Context | السياق الكويتي
 
 <div dir="rtl">
 
@@ -173,7 +173,7 @@ start index.html
 
 ---
 
-## 📊 Maturity Levels | مستويات النضج
+## Maturity Levels | مستويات النضج
 
 | Score | Level | المستوى | Description الوصف |
 |:---:|---|---|---|
@@ -185,7 +185,7 @@ start index.html
 
 ---
 
-## 🛠️ Technical Implementation | التنفيذ التقني
+## Technical Implementation | التنفيذ التقني
 
 ### Technologies Used:
 - **Frontend**: HTML5, CSS3, JavaScript (ES6+)
@@ -210,7 +210,7 @@ CIS-Kuwait-Assessment/
 
 ---
 
-## 📚 Resources | المصادر
+## Resources | المصادر
 
 <div dir="rtl">
 
@@ -235,7 +235,7 @@ CIS-Kuwait-Assessment/
 
 ---
 
-## 🤝 Contributing | المساهمة
+## Contributing | المساهمة
 
 <div dir="rtl">
 
@@ -253,7 +253,7 @@ We welcome contributions from the community! Please follow the steps above to co
 
 ---
 
-## 📧 Contact | التواصل
+## Contact | التواصل
 
 **Developer | المطور**: SiteQ8  
 **Email | البريد الإلكتروني**: Site@hotmail.com  
@@ -270,7 +270,7 @@ We welcome contributions from the community! Please follow the steps above to co
 
 ---
 
-## 📄 License | الترخيص
+## License | الترخيص
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
@@ -282,7 +282,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ---
 
-## 🙏 Acknowledgments | شكر وتقدير
+## Acknowledgments | شكر وتقدير
 
 <div dir="rtl">
 
@@ -301,7 +301,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ---
 
-## 🔐 Security Notice | ملاحظة أمنية
+## Security Notice | ملاحظة أمنية
 
 <div dir="rtl">
 
@@ -313,7 +313,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ---
 
-## 📅 Roadmap | خارطة الطريق
+## Roadmap | خارطة الطريق
 
 <div dir="rtl">
 
@@ -338,9 +338,3 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ---
 
 <div align="center" dir="rtl">
-
-### صُنع بـ ❤️ في الكويت | Made with ❤️ in Kuwait
-
-**Version 0.0.1** | Based on CIS Controls v8.1
-
-</div>
