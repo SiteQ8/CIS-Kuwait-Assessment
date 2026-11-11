@@ -2118,8 +2118,7 @@
         }
 
         function calculateIGScores(results) {
-            // This is a simplified calculation
-            // In a real implementation, you'd calculate based on IG-specific controls
+            // rough estimate, not per IG
             return {
                 ig1: Math.max(0, results.overallScore - 10),
                 ig2: results.overallScore,
